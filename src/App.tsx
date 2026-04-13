@@ -1,4 +1,3 @@
-import { Suspense } from 'react'
 import { ErrorBoundary } from './components/ErrorBoundary'
 import { Header } from './components/Header'
 import { CoinSelector } from './components/CoinSelector'
@@ -29,13 +28,7 @@ function App() {
             <PriceChart />
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
               <OrderForm />
-              <Suspense
-                fallback={
-                  <div className="bg-gray-900 rounded-xl border border-gray-800 p-4 animate-pulse h-40" />
-                }
-              >
-                <TransactionHistory />
-              </Suspense>
+              <TransactionHistory />
             </div>
           </main>
         </div>

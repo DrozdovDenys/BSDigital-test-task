@@ -1,43 +1,20 @@
-import { useMemo } from "react";
-import { useAppSelector } from "../store/hooks";
 import {
   formatUSD,
   formatCrypto,
   formatPercent,
   COIN_LABELS,
 } from "../utils/format";
+import { usePortfolioSummary } from "../hooks/usePortfolioSummary";
 
 export function PortfolioSummary() {
-  const cashBalance = useAppSelector((s) => s.portfolio.cashBalance);
-  const holdings = useAppSelector((s) => s.portfolio.holdings);
-  const prices = useAppSelector((s) => s.prices.data);
-
-  const summary = useMemo(() => {
-    const items = holdings.map((h) => {
-      const currentPrice = prices[h.coinId]?.usd ?? 0;
-      const currentValue = h.amount * currentPrice;
-      const costValue = h.amount * h.avgCostBasis;
-      const pnl = currentValue - costValue;
-      const pnlPercent = costValue > 0 ? (pnl / costValue) * 100 : 0;
-
-      return {
-        coinId: h.coinId,
-        amount: h.amount,
-        avgCost: h.avgCostBasis,
-        currentPrice,
-        currentValue,
-        pnl,
-        pnlPercent,
-      };
-    });
-
-    const holdingsValue = items.reduce((sum, i) => sum + i.currentValue, 0);
-    const totalValue = cashBalance + holdingsValue;
-    const totalPnl = totalValue - 10000;
-    const totalPnlPercent = (totalPnl / 10000) * 100;
-
-    return { items, totalValue, totalPnl, totalPnlPercent };
-  }, [holdings, prices, cashBalance]);
+  const {
+    items,
+    cashBalance,
+    totalValue,
+    totalPnl,
+    totalPnlPercent,
+    holdings,
+  } = usePortfolioSummary();
 
   return (
     <div className="bg-gray-900 rounded-xl border border-gray-800 p-4">
@@ -46,25 +23,25 @@ export function PortfolioSummary() {
       {/* Total value */}
       <div className="mb-4">
         <div className="text-2xl font-bold text-white">
-          {formatUSD(summary.totalValue)}
+          {formatUSD(totalValue)}
         </div>
         <div className="flex items-center gap-2 mt-1">
           <span
             className={`text-sm font-medium ${
-              summary.totalPnl >= 0 ? "text-green-400" : "text-red-400"
+              totalPnl >= 0 ? "text-green-400" : "text-red-400"
             }`}
           >
-            {summary.totalPnl >= 0 ? "+" : ""}
-            {formatUSD(summary.totalPnl)}
+            {totalPnl >= 0 ? "+" : ""}
+            {formatUSD(totalPnl)}
           </span>
           <span
             className={`text-xs px-1.5 py-0.5 rounded ${
-              summary.totalPnl >= 0
+              totalPnl >= 0
                 ? "bg-green-900/50 text-green-400"
                 : "bg-red-900/50 text-red-400"
             }`}
           >
-            {formatPercent(summary.totalPnlPercent)}
+            {formatPercent(totalPnlPercent)}
           </span>
         </div>
       </div>
@@ -76,7 +53,7 @@ export function PortfolioSummary() {
       </div>
 
       {/* Holdings */}
-      {summary.items.map((item) => {
+      {items.map((item) => {
         const label = COIN_LABELS[item.coinId];
         return (
           <div

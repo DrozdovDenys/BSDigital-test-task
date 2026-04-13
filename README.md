@@ -73,11 +73,11 @@ src/
 │   ├── CoinSelector  # Coin list with live prices
 │   ├── ErrorBoundary # Error fallback UI
 │   ├── Header        # App header with price ticker
-│   ├── OrderForm     # Buy/sell trading form
-│   ├── PortfolioSummary # Holdings & P/L overview
+│   ├── OrderForm     # Buy/sell trading form (logic in useOrderForm hook)
+│   ├── PortfolioSummary # Holdings & P/L overview (logic in usePortfolioSummary hook)
 │   ├── PriceChart    # 24h line chart (Recharts)
 │   └── TransactionHistory # Trade log
-├── hooks/            # Custom hooks (price/chart polling)
+├── hooks/            # Custom hooks (order form, portfolio summary, polling)
 ├── store/            # Redux store & slices
 │   ├── chartSlice    # Chart data state
 │   ├── portfolioSlice # Portfolio, trades, localStorage persistence
@@ -92,10 +92,12 @@ src/
 
 Uses the free [Binance API](https://api.binance.com/api/v3):
 
-- `GET /simple/price` — current prices (polled every 10s)
-- `GET /coins/{id}/market_chart` — 24h price history (polled every 60s)
+- `GET /api/v3/ticker/24hr` — current prices (polled every 10s)
+- `GET /api/v3/klines` — 24h price history (polled every 60s)
 
 ## Performance Optimizations
 
 - Memoized portfolio calculations with `useMemo`
 - Separate polling intervals: 10s for prices, 60s for chart data
+- Custom hooks for form and summary logic
+- Prettier config for consistent code style

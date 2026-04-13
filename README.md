@@ -4,7 +4,7 @@ A web-based crypto trading dashboard built with React, Redux Toolkit, and Rechar
 
 ## Features
 
-- **Real-time prices** — Live crypto prices updated every 10 seconds via CoinGecko API
+- **Real-time prices** — Live crypto prices updated every 10 seconds via Binance API
 - **Price charts** — Interactive 24-hour price charts with Recharts
 - **Mock trading** — Simulate buy/sell market orders for BTC, ETH, SOL
 - **Portfolio tracking** — View holdings, cash balance, and profit/loss calculations
@@ -19,7 +19,7 @@ A web-based crypto trading dashboard built with React, Redux Toolkit, and Rechar
 - **Redux Toolkit** for state management
 - **Recharts** for charting
 - **Tailwind CSS v4** for styling
-- **Axios** for HTTP requests
+- **Fetch** for HTTP requests
 - **Vitest** + **React Testing Library** for testing
 - **Vite 8** for development and builds
 - **TypeScript 6**
@@ -68,7 +68,7 @@ npm run lint
 
 ```
 src/
-├── api/              # CoinGecko API client
+├── api/              # Binance API client
 ├── components/       # React UI components
 │   ├── CoinSelector  # Coin list with live prices
 │   ├── ErrorBoundary # Error fallback UI
@@ -90,7 +90,7 @@ src/
 
 ## API
 
-Uses the free [CoinGecko API](https://www.coingecko.com/en/api):
+Uses the free [Binance API](https://api.binance.com/api/v3):
 
 - `GET /simple/price` — current prices (polled every 10s)
 - `GET /coins/{id}/market_chart` — 24h price history (polled every 60s)

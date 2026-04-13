@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { fetchPrices, type PriceData } from '../api/coingecko'
+import { fetchPrices, type PriceData } from '../api/binance'
 
 const SUPPORTED_COINS = ['bitcoin', 'ethereum', 'solana']
 
